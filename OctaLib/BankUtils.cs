@@ -1,9 +1,19 @@
-﻿using System.IO;
-
-namespace OctaLib
+﻿namespace OctaLib
 {
     internal class BankUtils
     {
+
+        public static bool ValidateHeader(byte[] bankData)
+        {
+            for (int i = 0; i < Constants.HEADER_BANK.Length; i++) 
+            {
+                if (bankData[i] !=  Constants.HEADER_BANK[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         public static string ReadPartName(byte[] bankData, int addr)
         {
@@ -76,6 +86,27 @@ namespace OctaLib
             }
 
             return false;
+        }
+
+        public static void SwapBanks(string path, int bank1, int bank2)
+        {
+            string GenerateBankName(int bankNum)
+            {
+                return path + "\\bank" + bankNum.ToString("00");
+            }
+
+            // Temporarily rename bank1 files
+            File.Move(GenerateBankName(bank1) + ".work", GenerateBankName(bank1) + ".work.tmp");
+            File.Move(GenerateBankName(bank1) + ".strd", GenerateBankName(bank1) + ".strd.tmp");
+
+            // Rename bank2 to bank1
+            File.Move(GenerateBankName(bank2) + ".work", GenerateBankName(bank1) + ".work");
+            File.Move(GenerateBankName(bank2) + ".strd", GenerateBankName(bank1) + ".strd");
+
+            // Rename bank1 temp to bank2
+            File.Move(GenerateBankName(bank1) + ".work.tmp", GenerateBankName(bank2) + ".work");
+            File.Move(GenerateBankName(bank1) + ".strd.tmp", GenerateBankName(bank2) + ".strd");
+
         }
     }
 }

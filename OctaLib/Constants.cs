@@ -3,6 +3,11 @@
     internal class Constants
     {
 
+        // Haders
+        public static readonly int[] HEADER_BANK = [
+            0x46, 0x4F, 0x52, 0x4D, 0x00, 0x00, 0x00, 0x00,  // FORM
+            0x44, 0x50, 0x53, 0x31, 0x42, 0x41, 0x4E, 0x4B]; // DPS1BANK
+
         // Fixed addresses
         public static readonly int[] ADDR_PART_NAME = [0x0009B4B3, 0x0009B4BA, 0x0009B4C1, 0x0009B4C8];
         public const int ADDR_PAT01 = 0x00000016; // The address of the first pattern header
