@@ -2,22 +2,31 @@
 {
     internal class Constants
     {
-        public const int ADDR_PART_1_NAME = 0x0009B4B3;
-        public const int ADDR_PART_2_NAME = 0x0009B4BA;
-        public const int ADDR_PART_3_NAME = 0x0009B4C1;
-        public const int ADDR_PART_4_NAME = 0x0009B4C8;
 
-        /*
-         * Pattern 1 track addresses: use these to find the start of tracks relative to other pattern headers 
-        TRAC01 0x0000001E
-        TRAC02 0x00000940
-        TRAC03 0x00001262
-        TRAC04 0x00001B84
-        TRAC05 0x000024A6
-        TRAC06 0x00002DC8
-        TRAC07 0x000036EA
-        TRAC08 0x0000400C
+        // Fixed addresses
+        public static readonly int[] ADDR_PART_NAME = [0x0009B4B3, 0x0009B4BA, 0x0009B4C1, 0x0009B4C8];
+        public const int ADDR_PAT01 = 0x00000016; // The address of the first pattern header
 
+        // Relative offsets
+        public const int OFFSET_TRACK_NUM = 8; // Offset from TRAC/MTRA header
+
+        // I don't actually know what this represents but it seems to be a reliable way
+        // to determine whether or not a track is in use (not empty)
+        public const int OFFSET_TRACK_USAGE = 16;
+
+        // Block lengths
+        public const int LENGTH_PATTERN_HEADER = 8; // 8 bytes
+        public const int LENGTH_PART_NAME = 6; // 6 byes
+        public const int LENGTH_PATTERN_LENGTH = 0x8EEC; // 36588 bytes
+        public const int LENGTH_MTRA = 0x8B9; // 2233 bytes
+        public const int LENGTH_TRAC = 0x922; // 2338 bytes
+
+        // Pattern 1 track addresses: use these to find the start of tracks relative to other pattern headers 
+        [Obsolete] public static readonly int[] ADDR_P01_TRACK = [
+            0x0000001E, 0x00000940, 0x00001262, 0x00001B84,
+            0x000024A6, 0x00002DC8, 0x000036EA, 0x0000400C];
+
+        /** 
         Pattern 1 MIDI track addresses: use these to find the start of tracks relative to other pattern headers 
         MTRA01 0x0000492E
         MTRA02 0x000051E7
