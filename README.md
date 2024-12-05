@@ -121,3 +121,6 @@ What I will need to concretely identify in order to provide a visual representat
 * Which patterns are in use (I believe I've found a byte that captures this)
 * Which patterns are using which part: this will requiring some probing
 * Part names (easy)
+
+Refer to the following file for a list of useful addresses:
+https://github.com/snugsound/OctaLib/blob/main/OctaLib/Constants.cs
