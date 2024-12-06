@@ -72,7 +72,33 @@ namespace OctaLibApp
 
             TopText.Text = $"Loaded project: {folder.Path}";
 
-            //var row = BanksPanel.Children[0].As<PatternRow>();
+            for (int bankNum = 1; bankNum < 17; bankNum++)
+            {
+                var patterns = new Patterns();
+                patterns.Clear();
+
+                var bankNumStr = bankNum.ToString("00");
+                var b = File.ReadAllBytes(folder.Path + $"\\bank{bankNumStr}.strd");
+
+                var partNames = new string[4];
+                for (int partNum = 0; partNum < 4; partNum++)
+                {
+                    partNames[partNum] = BankUtils.ReadPartName(b, partNum);
+                }
+
+                for (int patternNum = 0; patternNum < 16; patternNum++)
+                {
+                    var p = new Pattern();
+                    p.Status = BankUtils.ReadPatternActiveState(b, patternNum);
+                    p.Number = patternNum + 1;
+                    p.PartNumber = BankUtils.ReadPatternPart(b, patternNum) + 1;
+                    p.PartName = partNames[p.PartNumber - 1];
+                    patterns.Add(p);
+                }
+
+                var row = BanksPanel.Children[bankNum - 1].As<PatternRow>();
+                row.SetContent(patterns);
+            }
 
         }
     }

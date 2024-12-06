@@ -13,7 +13,7 @@
             <src:Patterns x:Key="patterns"/>
         </Grid.Resources>
 
-        <GridView ItemsSource="{StaticResource patterns}" Width="1500" SelectionMode="None">
+        <GridView Name="PatternGrid" ItemsSource="{StaticResource patterns}" Width="1500" SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="75">

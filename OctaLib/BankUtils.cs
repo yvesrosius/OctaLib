@@ -2,7 +2,13 @@
 {
     public class BankUtils
     {
+        // TODO: Consider passing in bank data to a constructor vs every method
 
+        /// <summary>
+        /// Checks if the header data for this bank file is valid
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <returns>True if header is valid</returns>
         public static bool ValidateHeader(byte[] bankData)
         {
             for (int i = 0; i < Constants.HEADER_BANK.Length; i++) 
@@ -15,12 +21,19 @@
             return true;
         }
 
-        public static string ReadPartName(byte[] bankData, int addr)
+        /// <summary>
+        /// Read the part names for this bank
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <param name="addr">Address offset</param>
+        /// <returns>Part name</returns>
+        public static string ReadPartName(byte[] bankData, int partNum)
         {
+
             char[] partName = new char[6];
 
             // Part names can be 6 chars
-            Array.Copy(bankData, addr, partName, 0, 6);
+            Array.Copy(bankData, Constants.ADDR_PART_NAME[partNum], partName, 0, 6);
 
             // But we need to ignore anything after 00 because it might be junk
             for (int i = 0; i < 6; i++)
@@ -36,11 +49,25 @@
             return new String(partName);
         }
 
+        /// <summary>
+        /// This doesn't do anything intesting. It just gets the track number for a given track (this should always match its position)
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <param name="trackNum">Track number (base zero)</param>
+        /// <returns>True if content is found</returns>
         public static int ReadTrackNum(byte[] bankData, int trackNum)
         {
-            return bankData[Constants.ADDR_PAT01 + Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_NUM];
+            return bankData[Constants.ADDR_PAT01 + Constants.LENGTH_PATTERN_HEADER + 
+                (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_NUM];
         }
 
+        /// <summary>
+        /// Determines if a track has content
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <param name="patNum">Pattern number (base zero)</param>
+        /// <param name="trackNum">Track number (base zero)</param>
+        /// <returns>True if content is found</returns>
         public static int ReadTrackState(byte[] bankData, int patNum, int trackNum)
         {
             return bankData[
@@ -49,6 +76,13 @@
                 Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_USAGE];
         }
 
+        /// <summary>
+        /// Determines if a MIDI track has content
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <param name="patNum">Pattern number (base zero)</param>
+        /// <param name="trackNum">MIDI track number (base zero)</param>
+        /// <returns>Track number (base zero)</returns>
         public static int ReadMTrackState(byte[] bankData, int patNum, int trackNum)
         {
             return bankData[
@@ -60,13 +94,17 @@
 
 
         /// <summary>
-        ///  Iterate through tracks until we find something that seems active (not empty)
+        /// Iterates through tracks until it finds something that seems active (not empty)
         /// </summary>
         /// <param name="bankData">Bank byte data</param>
         /// <param name="patNum">Pattern number (base 0)</param>
         /// <returns>True if not empty</returns>
         public static bool ReadPatternActiveState(byte[] bankData, int patNum)
         {
+            // TODO: Confirm if reading one byte is enough?
+            // I think this may be the trig data in binary format,
+            // in which case we would need to read 4 bytes?
+
             // Iterate through tracks
             for (int t = 0; t < 8; t++)
             {
@@ -88,6 +126,26 @@
             return false;
         }
 
+        /// <summary>
+        /// Reads the part number for the specified pattern
+        /// </summary>
+        /// <param name="bankData">Bank byte data</param>
+        /// <param name="patNum">Patter number (base zero)</param>
+        /// <returns>Part number (base zero)</returns>
+        public static int ReadPatternPart(byte[] bankData, int patNum)
+        {
+            return bankData[
+                Constants.ADDR_PAT01 + // Address of pattern 1
+                (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
+                Constants.OFFSET_PATTERN_PART_NUM];
+        }
+
+        /// <summary>
+        /// Sawps banks 1 and 2 at the specified path
+        /// </summary>
+        /// <param name="path">Project path</param>
+        /// <param name="bank1">Bank1</param>
+        /// <param name="bank2">Bank2</param>
         public static void SwapBanks(string path, int bank1, int bank2)
         {
             string GenerateBankName(int bankNum)

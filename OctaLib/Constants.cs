@@ -3,7 +3,7 @@
     public class Constants
     {
 
-        // Haders
+        // Headers
         public static readonly int[] HEADER_BANK = [
             0x46, 0x4F, 0x52, 0x4D, 0x00, 0x00, 0x00, 0x00,  // FORM
             0x44, 0x50, 0x53, 0x31, 0x42, 0x41, 0x4E, 0x4B]; // DPS1BANK
@@ -15,21 +15,16 @@
         // Relative offsets
         public const int OFFSET_TRACK_NUM = 8; // Offset from TRAC/MTRA header
 
-        // I don't actually know what this represents but it seems to be a reliable way
-        // to determine whether or not a track is in use (not empty)
-        public const int OFFSET_TRACK_USAGE = 16;
+        // See TODO in BankUtils.ReadPatternActiveState
+        public const int OFFSET_TRACK_USAGE = 16; // Offset from TRAC/MTRA header
+        public const int OFFSET_PATTERN_PART_NUM = 0x8EE7; // Offset from the PTRN header
 
         // Block lengths
         public const int LENGTH_PATTERN_HEADER = 8; // 8 bytes
-        public const int LENGTH_PART_NAME = 6; // 6 byes
+        public const int LENGTH_PART_NAME = 6; // 6 bytes
         public const int LENGTH_PATTERN_LENGTH = 0x8EEC; // 36588 bytes
         public const int LENGTH_MTRA = 0x8B9; // 2233 bytes
         public const int LENGTH_TRAC = 0x922; // 2338 bytes
-
-        // Pattern 1 track addresses: use these to find the start of tracks relative to other pattern headers 
-        [Obsolete] public static readonly int[] ADDR_P01_TRACK = [
-            0x0000001E, 0x00000940, 0x00001262, 0x00001B84,
-            0x000024A6, 0x00002DC8, 0x000036EA, 0x0000400C];
 
         /** 
         Pattern 1 MIDI track addresses: use these to find the start of tracks relative to other pattern headers 

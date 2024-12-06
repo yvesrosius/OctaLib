@@ -44,7 +44,7 @@ internal class Program
             string[] partNames = new string[4];
             for (int p = 0; p < 4; p++)
             {
-                partNames[p] = BankUtils.ReadPartName(b, Constants.ADDR_PART_NAME[p]).PadRight(6);
+                partNames[p] = BankUtils.ReadPartName(b, p).PadRight(6);
             }
 
             Console.WriteLine($"bank{bankNumStr} part names: {partNames[0]} {partNames[1]} {partNames[2]} {partNames[3]}");
