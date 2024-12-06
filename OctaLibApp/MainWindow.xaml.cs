@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using Windows.Storage.Pickers;
+using WinRT;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -20,6 +21,10 @@ namespace OctaLibApp
         public MainWindow()
         {
             this.InitializeComponent();
+            for (int i = 0; i < 16; i++) 
+            {
+                BanksPanel.Children.Add(new PatternRow());
+            };
         }
 
         private async void OnOpenProject(object sender, RoutedEventArgs e)
@@ -66,6 +71,8 @@ namespace OctaLibApp
             }
 
             TopText.Text = $"Loaded project: {folder.Path}";
+
+            //var row = BanksPanel.Children[0].As<PatternRow>();
 
         }
     }
