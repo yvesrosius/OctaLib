@@ -1,6 +1,6 @@
 ﻿namespace OctaLib
 {
-    internal class Constants
+    public class Constants
     {
 
         // Haders

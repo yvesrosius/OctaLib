@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OctaLib
+﻿namespace OctaLib
 {
-    internal class ProjectUtils
+    public class ProjectUtils
     {
 
         public static int GetVersion(string path)

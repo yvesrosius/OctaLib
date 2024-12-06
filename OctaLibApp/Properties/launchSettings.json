@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OctaLibApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "OctaLibApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

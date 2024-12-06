@@ -1,6 +1,6 @@
 ﻿namespace OctaLib
 {
-    internal class BankUtils
+    public class BankUtils
     {
 
         public static bool ValidateHeader(byte[] bankData)

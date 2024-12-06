@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="OctaLibApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OctaLibApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="OctaLib">
+
+    <StackPanel>
+        <MenuBar VerticalAlignment="Top">
+            <MenuBarItem Title="File">
+                <MenuFlyoutItem Text="Open Project Folder" Click="OnOpenProject"/>
+                <MenuFlyoutItem Text="Exit"/>
+            </MenuBarItem>
+        </MenuBar>
+        <TextBlock Name="TopText" Margin="10">Welcome to OctaLib! Please open a project folder to get started</TextBlock>
+        <GridView Name="ProjectGrid" Margin="10" MinWidth="1000">
+            <TextBlock>1</TextBlock>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+            <Rectangle Fill="Red" Width="10" Height="10"/>
+
+
+        </GridView>
+    </StackPanel>
+    
+</Window>
