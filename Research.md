@@ -93,7 +93,7 @@ AA AA AA AA AA AA AA AA 00 00 00 00 00 00 00 00 10 02
 
 The part reference is stored at the end of the pattern block:
 
-![Image](Images/OT-Parts.png)
+![Image](Images/OT-parts.png)
 
 In the example above, the part is set to 4.
 
@@ -102,7 +102,7 @@ In the example above, the part is set to 4.
 
 Regular (non recording) trigs are stored at the following location in reverse binary format:
 
-![Image](Images/OT-Trigs.png)
+![Image](Images/OT-trigs.png)
 
 In the example above, all trigs are set.
 
