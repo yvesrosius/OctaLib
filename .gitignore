@@ -398,3 +398,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# VS launch settings
+**/Properties/launchSettings.json
+
+# Ghostery backup files
+*.md.backup
+
