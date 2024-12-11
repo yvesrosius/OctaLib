@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// This doesn't do anything intesting. It just gets the track number for a given track (this should always match its position)
+        /// This doesn't do anything interesting. It just gets the track number for a given track (this should always match its position)
         /// </summary>
         /// <param name="bankData">Bank byte data</param>
         /// <param name="trackNum">Track number (base zero)</param>
@@ -68,12 +68,19 @@
         /// <param name="patNum">Pattern number (base zero)</param>
         /// <param name="trackNum">Track number (base zero)</param>
         /// <returns>True if content is found</returns>
-        public static int ReadTrackState(byte[] bankData, int patNum, int trackNum)
+        public static bool ReadTrackState(byte[] bankData, int patNum, int trackNum)
         {
-            return bankData[
-                Constants.ADDR_PAT01 + // Address of pattern 1
-                (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
-                Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_USAGE];
+            for (int i = 0; i < 8; i++)
+            {
+                if (bankData[
+                    Constants.ADDR_PAT01 + // Address of pattern 1
+                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_TRIGS + i] > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -83,15 +90,20 @@
         /// <param name="patNum">Pattern number (base zero)</param>
         /// <param name="trackNum">MIDI track number (base zero)</param>
         /// <returns>Track number (base zero)</returns>
-        public static int ReadMTrackState(byte[] bankData, int patNum, int trackNum)
+        public static bool ReadMTrackState(byte[] bankData, int patNum, int trackNum)
         {
-            return bankData[
-                Constants.ADDR_PAT01 + // Address of pattern 1
-                (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
-                (Constants.LENGTH_TRAC * 8) + // Skip the tracks to get to the MIDI tracks
-                Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_MTRA * trackNum) + Constants.OFFSET_TRACK_USAGE];
+            for (int i = 0; i < 8; i++) {
+                if (bankData[
+                    Constants.ADDR_PAT01 + // Address of pattern 1
+                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
+                    (Constants.LENGTH_TRAC * 8) + // Skip the tracks to get to the MIDI tracks
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_MTRA * trackNum) + Constants.OFFSET_TRACK_TRIGS + i] > 0 )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
-
 
         /// <summary>
         /// Iterates through tracks until it finds something that seems active (not empty)
@@ -108,7 +120,7 @@
             // Iterate through tracks
             for (int t = 0; t < 8; t++)
             {
-                if (BankUtils.ReadTrackState(bankData, patNum, t) > 0)
+                if (BankUtils.ReadTrackState(bankData, patNum, t))
                 {
                     return true;
                 }
@@ -117,7 +129,7 @@
             // Iterate through MIDI tracks
             for (int t = 0; t < 8; t++)
             {
-                if (BankUtils.ReadMTrackState(bankData, patNum, t) > 0)
+                if (BankUtils.ReadMTrackState(bankData, patNum, t))
                 {
                     return true;
                 }
