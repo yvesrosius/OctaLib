@@ -17,6 +17,7 @@
 
         // See TODO in BankUtils.ReadPatternActiveState
         public const int OFFSET_TRACK_TRIGS = 9; // Offset from TRAC/MTRA header
+        public const int OFFSET_TRACK_REC_TRIGS = 41; // Offset from TRAC/MTRA header
         public const int OFFSET_PATTERN_PART_NUM = 0x8EE7; // Offset from the PTRN header
 
         // Block lengths

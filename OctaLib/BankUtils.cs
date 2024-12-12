@@ -70,6 +70,8 @@
         /// <returns>True if content is found</returns>
         public static bool ReadTrackState(byte[] bankData, int patNum, int trackNum)
         {
+
+            // Check for regular trigs
             for (int i = 0; i < 8; i++)
             {
                 if (bankData[
@@ -80,6 +82,19 @@
                     return true;
                 }
             }
+
+            // Check for rec trigs
+            for (int i = 0; i < 8; i++)
+            {
+                if (bankData[
+                    Constants.ADDR_PAT01 + // Address of pattern 1
+                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_REC_TRIGS + i] > 0)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 
