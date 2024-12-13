@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OctaLibAvalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:OctaLibAvalonia.Views"
+        xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="OctaLibAvalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="OctaLibAvalonia">
+
+    <dialogHost:DialogHost Name="ErrorDialog" Identifier="MainDialogHost"
+                                   DialogMargin="16"
+                                   dialogHost:DialogHostStyle.CornerRadius="8">
+        <!--
+        <dialogHost:DialogHost.DialogContent>
+            <StackPanel>
+                <TextBlock TextAlignment="Center">Your lucky number:</TextBlock>
+                <TextBlock Classes="Body1"
+                            TextAlignment="Center"
+                            Text="13" />
+                <Button Margin="0 8 0 0"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}">
+                    THANKS, CLOSE
+                </Button>
+            </StackPanel>
+        </dialogHost:DialogHost.DialogContent>
+        -->
+        <views:MainView />
+    </dialogHost:DialogHost>
+
+    <Window.Resources>
+        <StackPanel x:Key="ProjectError">
+            <TextBlock Text="No stored project files found and/or project version mismatch."/>
+            <TextBlock Text="Please ensure you've saved your project before opening."/>
+            <Button Margin="0 16 0 0"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}">
+                CLOSE
+            </Button>
+        </StackPanel>
+    </Window.Resources>
+</Window>
