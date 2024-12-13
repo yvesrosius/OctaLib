@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:OctaLibAvalonia.ViewModels"
+             xmlns:controls="using:OctaLibAvalonia"
+             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="OctaLibAvalonia.Views.MainView"
+             x:DataType="vm:MainViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <StackPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open Project Folder" Click="OnOpenProject"/>
+                <MenuItem Header="Exit" />
+            </MenuItem>
+        </Menu>
+        <TextBlock Name="TopText" Margin="10">Welcome to OctaLib! Please open a project folder to get started</TextBlock>
+
+        <Grid Margin="20,0,0,0">
+            <ScrollViewer Width="1400" Height="800">
+                <ItemsControl ItemsSource="{Binding Banks}" Name="BankItems">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <controls:PatternRow></controls:PatternRow>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </StackPanel>
+</UserControl>
