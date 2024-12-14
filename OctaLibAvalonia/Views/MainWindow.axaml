@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:OctaLibAvalonia.Views"
+        xmlns:converters="clr-namespace:OctaLibAvalonia.Converters"
         xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="OctaLibAvalonia.Views.MainWindow"
@@ -33,7 +34,9 @@
     </dialogHost:DialogHost>
 
     <Window.Resources>
-        <StackPanel x:Key="ProjectError">
+        <converters:BankSwapConverter x:Key="BankSwapConverter"/>
+
+        <StackPanel x:Key="ProjectErrorDialog">
             <TextBlock Text="No stored project files found and/or project version mismatch."/>
             <TextBlock Text="Please ensure you've saved your project before opening."/>
             <Button Margin="0 16 0 0"
@@ -41,5 +44,40 @@
                 CLOSE
             </Button>
         </StackPanel>
+
+        <StackPanel x:Key="SwapBanksDialog">
+            <UniformGrid Columns="2">
+                <TextBlock Text="Bank1:"/>
+                <TextBox Name="Bank1"/>
+                <TextBlock Margin="0 5 0 0" Text="Bank2:"/>
+                <TextBox Name="Bank2"/>
+            </UniformGrid>
+            <TextBlock Margin="0 16 0 0" Name="Error"/>
+            <Button Margin="0 16 0 0" Command="{Binding OnSwapBanksAction}">
+                <!--
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource BankSwapConverter}">
+                        <Binding ElementName="Bank1" Path="Bank1"/>
+                        <Binding ElementName="Bank2" Path="Bank2"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+                -->
+                SWAP
+            </Button>
+            <Button Margin="0 16 0 0"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}">
+                CANCEL
+            </Button>
+        </StackPanel>
+
+        <StackPanel x:Key="AboutDialog">
+            <TextBlock Text="{Binding Path=CurrentVersion, StringFormat='OctaLib {0}'}"/>
+            <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/snugsound/OctaLib/"/>
+            <Button Margin="0 16 0 0"
+                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}">
+                CLOSE
+            </Button>
+        </StackPanel>
+
     </Window.Resources>
 </Window>

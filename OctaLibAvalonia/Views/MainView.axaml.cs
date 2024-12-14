@@ -11,6 +11,7 @@ namespace OctaLibAvalonia.Views;
 
 public partial class MainView : UserControl
 {
+
     public MainView()
     {
         InitializeComponent();
@@ -43,11 +44,12 @@ public partial class MainView : UserControl
 
         if (version != 19)
         {
-            await DialogHost.Show(topLevel.Resources["ProjectError"], "MainDialogHost");
+            await DialogHost.Show(topLevel.Resources["ProjectErrorDialog"], "MainDialogHost");
             return;
         }
 
         TopText.Text = $"Loaded project: {folder}";
+        SwapBanksMenuItem.IsEnabled = true;
 
         var banks = new Banks();
 
@@ -80,6 +82,17 @@ public partial class MainView : UserControl
         }
 
         BankItems.ItemsSource = banks;
+    }
+
+    private async void OnSwapBanks(object sender, RoutedEventArgs e)
+    {
+        await DialogHost.Show(TopLevel.GetTopLevel(this).Resources["SwapBanksDialog"], "MainDialogHost");
+    }
+
+    private async void OnAbout(object sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        await DialogHost.Show(topLevel.Resources["AboutDialog"], "MainDialogHost");
     }
 
 }

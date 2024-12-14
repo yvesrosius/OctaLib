@@ -20,6 +20,12 @@
                 <MenuItem Header="Open Project Folder" Click="OnOpenProject"/>
                 <MenuItem Header="Exit" />
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Name="SwapBanksMenuItem" Header="Swap Banks" Click="OnSwapBanks" IsEnabled="False"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="About" Click="OnAbout"/>
+            </MenuItem>
         </Menu>
         <TextBlock Name="TopText" Margin="10">Welcome to OctaLib! Please open a project folder to get started</TextBlock>
 
