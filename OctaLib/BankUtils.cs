@@ -102,17 +102,17 @@
         /// Determines if a MIDI track has content
         /// </summary>
         /// <param name="bankData">Bank byte data</param>
-        /// <param name="patNum">Pattern number (base zero)</param>
-        /// <param name="trackNum">MIDI track number (base zero)</param>
+        /// <param name="patternNumber">Pattern number (base zero)</param>
+        /// <param name="trackIndex">MIDI track number (base zero)</param>
         /// <returns>Track number (base zero)</returns>
-        public static bool ReadMTrackState(byte[] bankData, int patNum, int trackNum)
+        public static bool ReadMidiTrackState(byte[] bankData, int patternNumber, int trackIndex)
         {
             for (int i = 0; i < 8; i++) {
                 if (bankData[
                     Constants.ADDR_PAT01 + // Address of pattern 1
-                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
+                    (Constants.LENGTH_PATTERN_LENGTH * patternNumber) + // Offset by length of a pattern block * pattern number
                     (Constants.LENGTH_TRAC * 8) + // Skip the tracks to get to the MIDI tracks
-                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_MTRA * trackNum) + Constants.OFFSET_TRACK_TRIGS + i] > 0 )
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_MTRA * trackIndex) + Constants.OFFSET_TRACK_TRIGS + i] > 0 )
                 {
                     return true;
                 }
@@ -144,7 +144,7 @@
             // Iterate through MIDI tracks
             for (int midiTrackIndex = 0; midiTrackIndex < 8; midiTrackIndex++)
             {
-                if (BankUtils.ReadMTrackState(bankData, patternIndex, midiTrackIndex))
+                if (BankUtils.ReadMidiTrackState(bankData, patternIndex, midiTrackIndex))
                 {
                     return true;
                 }

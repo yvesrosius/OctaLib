@@ -9,7 +9,7 @@ internal class Program
 
     private static void IntegrityCheck(string path)
     {
-        if (!File.Exists(path + "\\project.strd"))
+        if (!File.Exists(path + "\\project.strd") && !File.Exists(path + "\\project.work"))
         {
             Console.WriteLine("This does not appear to be a valid Octatrack project directory");
             return;
@@ -28,33 +28,42 @@ internal class Program
 
         for (int bankNumber = 1; bankNumber < 17; bankNumber++)
         {
-
             var bankFileName = bankNumber.ToString("00");
-            var bankData = File.ReadAllBytes(path + $"\\bank{bankFileName}.work");
-
-            if (!BankUtils.ValidateHeader(bankData))
+            if (File.Exists(path + $"\\bank{bankFileName}.strd"))
             {
-                Console.WriteLine($"Bank {bankNumber + 1} appears to be invalid");
-                return;
+                var bankData = File.ReadAllBytes(path + $"\\bank{bankFileName}.strd");
+                AssembleInfo(bankData, bankFileName, bankNumber);
             }
-
-            //Console.WriteLine($"bank{bankNumStr} has {b.Length} bytes");
-
-            string[] partNames = new string[4];
-            for (int partIndex = 0; partIndex < 4; partIndex++)
+            if (File.Exists(path + $"\\bank{bankFileName}.work"))
             {
-                partNames[partIndex] = BankUtils.ReadPartName(bankData, partIndex).PadRight(6);
+                var bankData = File.ReadAllBytes(path + $"\\bank{bankFileName}.work");
+                AssembleInfo(bankData, bankFileName, bankNumber);
             }
-
-            Console.WriteLine($"bank{bankFileName} part names: {partNames[0]} {partNames[1]} {partNames[2]} {partNames[3]}");
-
-            Console.Write("Pattern states: ");
-            for (int patternIndex = 0; patternIndex < 16; patternIndex++)
-            {
-                Console.Write(BankUtils.ReadPatternActiveState(bankData, patternIndex) ? "1" : "0");
-            }
-            Console.WriteLine();
         }
+    }
+
+    private static void AssembleInfo(byte[] bankData, string bankFileName, int bankNumber)
+    {
+        if (!BankUtils.ValidateHeader(bankData))
+        {
+            Console.WriteLine($"Bank {bankNumber + 1} appears to be invalid");
+            return;
+        }
+
+        string[] partNames = new string[4];
+        for (int partIndex = 0; partIndex < 4; partIndex++)
+        {
+            partNames[partIndex] = BankUtils.ReadPartName(bankData, partIndex).PadRight(6);
+        }
+
+        Console.WriteLine($"bank{bankFileName} part names: {partNames[0]} {partNames[1]} {partNames[2]} {partNames[3]}");
+
+        Console.Write("Pattern states: ");
+        for (int patternIndex = 0; patternIndex < 16; patternIndex++)
+        {
+            Console.Write(BankUtils.ReadPatternActiveState(bankData, patternIndex) ? "1" : "0");
+        }
+        Console.WriteLine();
     }
 
     private static void Main(string[] args)

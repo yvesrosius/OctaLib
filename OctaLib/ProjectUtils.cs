@@ -5,7 +5,7 @@
 
         public static int GetVersion(string path)
         {
-            var f = File.ReadAllLines(path + "\\project.strd");
+            var f = File.ReadAllLines(path + "\\project.work");
             bool foundMeta = false;
             foreach (var s in f)
             {
