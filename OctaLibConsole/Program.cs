@@ -26,33 +26,32 @@ internal class Program
     {
         string[] partnames = new string[4];
 
-
-        for (int bankNum = 1; bankNum < 17; bankNum++)
+        for (int bankNumber = 1; bankNumber < 17; bankNumber++)
         {
 
-            var bankNumStr = bankNum.ToString("00");
-            var b = File.ReadAllBytes(path + $"\\bank{bankNumStr}.strd");
+            var bankFileName = bankNumber.ToString("00");
+            var bankData = File.ReadAllBytes(path + $"\\bank{bankFileName}.work");
 
-            if (!BankUtils.ValidateHeader(b))
+            if (!BankUtils.ValidateHeader(bankData))
             {
-                Console.WriteLine($"Bank {bankNum + 1} appears to be invalid");
+                Console.WriteLine($"Bank {bankNumber + 1} appears to be invalid");
                 return;
             }
 
             //Console.WriteLine($"bank{bankNumStr} has {b.Length} bytes");
 
             string[] partNames = new string[4];
-            for (int p = 0; p < 4; p++)
+            for (int partIndex = 0; partIndex < 4; partIndex++)
             {
-                partNames[p] = BankUtils.ReadPartName(b, p).PadRight(6);
+                partNames[partIndex] = BankUtils.ReadPartName(bankData, partIndex).PadRight(6);
             }
 
-            Console.WriteLine($"bank{bankNumStr} part names: {partNames[0]} {partNames[1]} {partNames[2]} {partNames[3]}");
+            Console.WriteLine($"bank{bankFileName} part names: {partNames[0]} {partNames[1]} {partNames[2]} {partNames[3]}");
 
             Console.Write("Pattern states: ");
-            for (int pat = 0; pat < 16; pat++)
+            for (int patternIndex = 0; patternIndex < 16; patternIndex++)
             {
-                Console.Write(BankUtils.ReadPatternActiveState(b, pat) ? "1" : "0");
+                Console.Write(BankUtils.ReadPatternActiveState(bankData, patternIndex) ? "1" : "0");
             }
             Console.WriteLine();
         }

@@ -27,13 +27,13 @@
         /// <param name="bankData">Bank byte data</param>
         /// <param name="addr">Address offset</param>
         /// <returns>Part name</returns>
-        public static string ReadPartName(byte[] bankData, int partNum)
+        public static string ReadPartName(byte[] bankData, int partIndex)
         {
 
             char[] partName = new char[6];
 
             // Part names can be 6 chars
-            Array.Copy(bankData, Constants.ADDR_PART_NAME[partNum], partName, 0, 6);
+            Array.Copy(bankData, Constants.ADDR_PART_NAME[partIndex], partName, 0, 6);
 
             // But we need to ignore anything after 00 because it might be junk
             for (int i = 0; i < 6; i++)
@@ -65,10 +65,10 @@
         /// Determines if a track has content
         /// </summary>
         /// <param name="bankData">Bank byte data</param>
-        /// <param name="patNum">Pattern number (base zero)</param>
-        /// <param name="trackNum">Track number (base zero)</param>
+        /// <param name="patternNumber">Pattern number (base zero)</param>
+        /// <param name="trackIndex">Track number (base zero)</param>
         /// <returns>True if content is found</returns>
-        public static bool ReadTrackState(byte[] bankData, int patNum, int trackNum)
+        public static bool ReadTrackState(byte[] bankData, int patternNumber, int trackIndex)
         {
 
             // Check for regular trigs
@@ -76,8 +76,8 @@
             {
                 if (bankData[
                     Constants.ADDR_PAT01 + // Address of pattern 1
-                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
-                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_TRIGS + i] > 0)
+                    (Constants.LENGTH_PATTERN_LENGTH * patternNumber) + // Offset by length of a pattern block * pattern number
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackIndex) + Constants.OFFSET_TRACK_TRIGS + i] > 0)
                 {
                     return true;
                 }
@@ -88,8 +88,8 @@
             {
                 if (bankData[
                     Constants.ADDR_PAT01 + // Address of pattern 1
-                    (Constants.LENGTH_PATTERN_LENGTH * patNum) + // Offset by length of a pattern block * pattern number
-                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackNum) + Constants.OFFSET_TRACK_REC_TRIGS + i] > 0)
+                    (Constants.LENGTH_PATTERN_LENGTH * patternNumber) + // Offset by length of a pattern block * pattern number
+                    Constants.LENGTH_PATTERN_HEADER + (Constants.LENGTH_TRAC * trackIndex) + Constants.OFFSET_TRACK_REC_TRIGS + i] > 0)
                 {
                     return true;
                 }
@@ -124,27 +124,27 @@
         /// Iterates through tracks until it finds something that seems active (not empty)
         /// </summary>
         /// <param name="bankData">Bank byte data</param>
-        /// <param name="patNum">Pattern number (base 0)</param>
+        /// <param name="patternIndex">Pattern number (base 0)</param>
         /// <returns>True if not empty</returns>
-        public static bool ReadPatternActiveState(byte[] bankData, int patNum)
+        public static bool ReadPatternActiveState(byte[] bankData, int patternIndex)
         {
             // TODO: Confirm if reading one byte is enough?
             // I think this may be the trig data in binary format,
             // in which case we would need to read 4 bytes?
 
             // Iterate through tracks
-            for (int t = 0; t < 8; t++)
+            for (int trackIndex = 0; trackIndex < 8; trackIndex++)
             {
-                if (BankUtils.ReadTrackState(bankData, patNum, t))
+                if (BankUtils.ReadTrackState(bankData, patternIndex, trackIndex))
                 {
                     return true;
                 }
             }
 
             // Iterate through MIDI tracks
-            for (int t = 0; t < 8; t++)
+            for (int midiTrackIndex = 0; midiTrackIndex < 8; midiTrackIndex++)
             {
-                if (BankUtils.ReadMTrackState(bankData, patNum, t))
+                if (BankUtils.ReadMTrackState(bankData, patternIndex, midiTrackIndex))
                 {
                     return true;
                 }
